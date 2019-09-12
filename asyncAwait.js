@@ -73,3 +73,30 @@ async function showAvatar() {
     }
   }
   ErrorHandling();
+
+
+
+/* Event emitter with async await*/
+const eventEmitter  = require('events');
+
+class fetchData extends eventEmitter{
+  constructor(){
+    super()
+  }
+
+  async fetchData(){
+    const serverData = new Promise(function(resolve,reject){
+        setTimeout(function(){
+          resolve("data_recived from server");
+        },3000)
+    })
+    const data = await serverData;
+    this.emit("data_recived",data);
+  }
+}
+
+const dataFetcher = new fetchData();
+dataFetcher.on('data_recived',function(data){
+  console.log("dataRecived--->",data)
+})
+dataFetcher.fetchData();
